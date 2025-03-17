@@ -6,7 +6,7 @@ from .views import CategoryView
 router = SimpleRouter()
 
 
-router.registry(r'category', CategoryView)
+router.register(r'category', CategoryView)
 
 
 api_router = router.urls
