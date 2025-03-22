@@ -115,6 +115,8 @@ class Product(models.Model):
 
 
 
+
+
 class OptionGroup(models.Model):
     """
     Represents a group of options that can be associated with products or other entities.
@@ -135,3 +137,38 @@ class OptionGroup(models.Model):
     class Meat:
         verbose_name = 'Option group'
         verbose_name_plural = 'Option groups' 
+
+
+
+
+
+
+class OptionValue(models.Model):
+    """
+    Represents a specific value within an option group.
+
+    This model is used to store individual values that belong to an option group.
+    For example, if the option group is "Color", the values could be "Red", "Blue", etc.
+
+    Attributes:
+        value (str): The specific value of the option (e.g., "Red", "Large").
+        option_group (OptionGroup): The group to which this value belongs.
+    """
+    
+    value = models.CharField(
+        max_length=30,  
+        verbose_name='Option Value',  
+        help_text='Enter the specific value for this option (e.g., "Red", "Large").', 
+    )
+        
+    option_group = models.ForeignKey(
+        OptionGroup,  
+        related_name='option_values',  
+        on_delete=models.CASCADE, 
+        verbose_name='Option Group', 
+        help_text='Select the option group to which this value belongs.',  
+    )
+
+    def __str__(self):
+
+        return f"{self.value} ({self.option_group.title})"
