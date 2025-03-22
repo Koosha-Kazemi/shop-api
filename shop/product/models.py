@@ -110,3 +110,28 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products' 
+
+
+
+
+
+class OptionGroup(models.Model):
+    """
+    Represents a group of options that can be associated with products or other entities.
+    
+    Attributes:
+        title (str): The title of the option group (e.g., "Color", "Size").
+    """
+    
+    title = models.CharField(max_length=40,
+                             verbose_name='Option group title',
+                             help_text='Select the option values for this group.',
+                             unique=True)
+    
+    def __str__(self):
+        return self.title
+    
+
+    class Meat:
+        verbose_name = 'Option group'
+        verbose_name_plural = 'Option groups' 
