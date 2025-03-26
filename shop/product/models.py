@@ -198,3 +198,14 @@ class ProductAttribute(models.Model):
 
     def __str__(self):
         return f'{self.proudct.name}'
+
+
+def product_image_path(instance, filename):
+    return f'products/{instance.product.id}/images/{filename}'
+
+
+class Image(models.Model):
+    image =  models.ImageField(upload_to=product_image_path)
+
+
+    
