@@ -205,7 +205,43 @@ def product_image_path(instance, filename):
 
 
 class Image(models.Model):
-    image =  models.ImageField(upload_to=product_image_path)
-
-
+    """
+    Represents an image entity in the system with metadata and organizational features.
     
+    This model serves as the base for storing all image files along with their 
+    associated metadata. Images are organized using a product-based path structure
+    and include management fields for ordering and activation.
+
+    Attributes:
+        image (ImageField): The actual image file with dynamic path generation
+        created_at (DateTime): Automatic timestamp when image is first created
+        updated_at (DateTime): Automatic timestamp when image is last modified
+        is_active (Boolean): Flag to enable/disable the image without deletion
+        index (PositiveInteger): Sorting position for display ordering
+    """
+    
+    image = models.ImageField(
+        upload_to=  product_image_path,
+        verbose_name ='Image file'
+    )
+    created_at = models.DateTimeField(
+        auto_now_add =True,
+        verbose_name ='Creation date'
+    )
+    updated_at = models.DateTimeField(
+        auto_now =True,
+        verbose_name ='Last updated'
+    )
+    is_active = models.BooleanField(
+        default =True,
+        verbose_name ='Is active'
+    )
+    index= models.PositiveIntegerField(default=0)
+
+    class Meta:
+        verbose_name = 'Image'
+        verbose_name_plural = 'Images'
+        ordering = ['display_order']
+
+    def __str__(self):
+        return f"Image {self.id} - {self.image.name}"
