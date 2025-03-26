@@ -172,3 +172,29 @@ class OptionValue(models.Model):
     def __str__(self):
 
         return f"{self.value} ({self.option_group.title})"
+    
+
+
+
+
+class ProductAttribute(models.Model):
+    """
+    Represents an attribute option association between a Product and an OptionGroup.
+    
+    This model links products to their configurable option groups (like color, size etc.),
+    establishing a many-to-one relationship between products and available options.
+    
+    Attributes:
+        product (ForeignKey): Reference to the Product this attribute belongs to.
+                             Related name 'product_attributes' allows accessing all
+                             attributes of a product through reverse relation.
+        option_group (ForeignObject): Reference to the OptionGroup that defines the
+                                    available choices for this attribute. Related name
+                                    'option_group' allows reverse lookup from OptionGroup.""
+    """
+    
+    proudct = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_attributes')
+    option_group = models.ForeignObject(OptionGroup, on_delete=models.CASCADE, related_name='option_group')
+
+    def __str__(self):
+        return f'{self.proudct.name}'
