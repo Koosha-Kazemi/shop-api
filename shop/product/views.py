@@ -8,13 +8,10 @@ from .serializer import CategorySerializer, ProductReadSerializer, ProductWriteS
 class CategoryView(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    
-
 
 
 class ProductView(ModelViewSet):
     queryset = Product.objects.all()
-
 
     def get_serializer_class(self):
         """
@@ -25,3 +22,5 @@ class ProductView(ModelViewSet):
         if self.request.method in SAFE_METHODS:
             return ProductReadSerializer
         return ProductWriteSerializer
+    
+   
