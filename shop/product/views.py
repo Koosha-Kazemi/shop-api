@@ -2,8 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import SAFE_METHODS
 
 from .models import Category, Product
-from .serializer import CategorySerializer, ProductReadSerializer, ProductWriteSerializer
-
+from .serializer import CategorySerializer, ProductSerializer
 
 class CategoryViewSet(ModelViewSet):
     """
@@ -41,9 +40,6 @@ class ProductViewSet(ModelViewSet):
     - `partial_update`: Partially update a product by ID.
     - `destroy`: Delete a product by ID.
     """
+    
     queryset = Product.objects.all()
-
-    def get_serializer_class(self):
-        if self.request.method in SAFE_METHODS:
-            return ProductReadSerializer
-        return ProductWriteSerializer
+    serializer_class = ProductSerializer

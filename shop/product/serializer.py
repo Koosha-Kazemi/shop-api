@@ -10,18 +10,12 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 
-    
-class ProductWriteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = '__all__'
 
-
-
-
-class ProductReadSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Product
         fields = '__all__'
         read_only_fields = ('final_price_value',)
+
+
