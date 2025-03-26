@@ -194,7 +194,7 @@ class ProductAttribute(models.Model):
     """
     
     proudct = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_attributes')
-    option_group = models.ForeignObject(OptionGroup, on_delete=models.CASCADE, related_name='option_group')
+    option_group = models.ForeignKey(OptionGroup, on_delete=models.CASCADE, related_name='option_group_attribiute')
 
     def __str__(self):
         return f'{self.proudct.name}'
