@@ -245,3 +245,48 @@ class Image(models.Model):
 
     def __str__(self):
         return f"Image {self.id} - {self.image.name}"
+    
+
+
+class ProductImage(models.Model):
+    """
+   
+    Establishes a relationship between Products and Images with metadata.
+    
+    This model serves as a junction table implementing a many-to-many relationship
+    between products and their images, with additional attributes specific to each
+    product-image pairing.
+
+    Attributes:
+        product: Associated Product (ForeignKey)
+        image: Associated Image (ForeignKey) 
+        is_primary: Marks primary display image (Boolean)
+        alt_text: Accessibility description (CharField)
+    """
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='product_images', 
+        verbose_name='Related Product'
+    )
+    image = models.ForeignKey(
+        Image,
+        on_delete=models.CASCADE,
+        related_name='product_relations',  
+        verbose_name='Image'
+    )
+    is_primary = models.BooleanField(
+        default=False,
+        verbose_name='Primary Image',
+        help_text='Designates the main image for the product'
+    )
+   
+
+    class Meta:
+        verbose_name = 'Product Image'
+        verbose_name_plural = 'Product Images'
+        ordering = ('image__index',)
+        unique_together = ('product', 'image') 
+
+    def __str__(self):
+        return f'Image id({self.image.id}) wfor Product {self.product.id}:{self.product.title}'
