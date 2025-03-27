@@ -1,4 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import SAFE_METHODS
 
 from .models import Category, Product
@@ -22,24 +23,18 @@ class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
 
 
-class ProductViewSet(ModelViewSet):
+class ProductView(ListCreateAPIView):
     """
-    A ViewSet for managing products with separate read/write serializers.
-
-    Supports all CRUD operations with the following behavior:
-    - **Safe Methods** (GET, HEAD, OPTIONS):
-      - Uses `ProductReadSerializer` for read-only operations.
-    - **Unsafe Methods** (POST, PUT, PATCH, DELETE):
-      - Uses `ProductWriteSerializer` for modifications.
-
-    Actions:
-    - `list`: Get all products.
-    - `create`: Add a new product.
-    - `retrieve`: Fetch a single product by ID.
-    - `update`: Fully update a product by ID.
-    - `partial_update`: Partially update a product by ID.
-    - `destroy`: Delete a product by ID.
-    """
+    Product list and creation endpoint.
     
+    GET:
+    Returns paginated list of all products
+    
+    POST:
+    Create a new product instance
+    
+    Uses ProductSerializer for data validation and transformation
+    """
+
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
