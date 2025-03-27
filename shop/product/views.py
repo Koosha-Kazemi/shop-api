@@ -1,9 +1,9 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, CreateAPIView
 from rest_framework.permissions import SAFE_METHODS
 
-from .models import Category, Product
-from .serializer import CategorySerializer, ProductSerializer
+from .models import Category, Product, ProductImage
+from .serializer import CategorySerializer, ProductSerializer, ProductImageSerializer
 
 class CategoryViewSet(ModelViewSet):
     """
@@ -38,3 +38,18 @@ class ProductView(ListCreateAPIView):
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+
+
+class ProductImageView(CreateAPIView):
+    
+    """
+    Create new product images.
+    
+    POST /api/product-images/
+    - Requires: product ID and image file
+    - Returns: image details with URL
+    """
+
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageSerializer
