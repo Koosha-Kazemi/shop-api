@@ -26,12 +26,6 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
 
-
-
-
-
-
-
 class Product(models.Model):
     """
     Represents a product in the system.
@@ -112,11 +106,6 @@ class Product(models.Model):
         verbose_name_plural = 'Products' 
 
 
-
-
-
-
-
 class OptionGroup(models.Model):
     """
     Represents a group of options that can be associated with products or other entities.
@@ -137,10 +126,6 @@ class OptionGroup(models.Model):
     class Meat:
         verbose_name = 'Option group'
         verbose_name_plural = 'Option groups' 
-
-
-
-
 
 
 class OptionValue(models.Model):
@@ -173,9 +158,6 @@ class OptionValue(models.Model):
 
         return f"{self.value} ({self.option_group.title})"
     
-
-
-
 
 class ProductAttribute(models.Model):
     """
