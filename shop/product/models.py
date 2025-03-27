@@ -223,7 +223,7 @@ class Image(models.Model):
     class Meta:
         verbose_name = 'Image'
         verbose_name_plural = 'Images'
-        ordering = ['display_order']
+       
 
     def __str__(self):
         return f"Image {self.id} - {self.image.name}"
@@ -257,13 +257,7 @@ class ProductImage(models.Model):
         related_name='product_relations',  
         verbose_name='Image'
     )
-    is_primary = models.BooleanField(
-        default=False,
-        verbose_name='Primary Image',
-        help_text='Designates the main image for the product'
-    )
-   
-
+ 
     class Meta:
         verbose_name = 'Product Image'
         verbose_name_plural = 'Product Images'
