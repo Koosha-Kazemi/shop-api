@@ -17,15 +17,9 @@ class ProductSerializer(serializers.ModelSerializer):
         read_only_fields = ('final_price_value',)
 
         
-class ImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Image
-        fields = ('image',)
-
 
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = '__all__'
-
+        fileds = '__all__'
 
