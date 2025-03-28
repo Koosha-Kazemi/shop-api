@@ -186,83 +186,60 @@ def product_image_path(instance, filename):
     return f'products/{instance.product.id}/images/{filename}'
 
 
-class Image(models.Model):
-    """
-    Represents an image entity in the system with metadata and organizational features.
-    
-    This model serves as the base for storing all image files along with their 
-    associated metadata. Images are organized using a product-based path structure
-    and include management fields for ordering and activation.
-
-    Attributes:
-        image (ImageField): The actual image file with dynamic path generation
-        created_at (DateTime): Automatic timestamp when image is first created
-        updated_at (DateTime): Automatic timestamp when image is last modified
-        is_active (Boolean): Flag to enable/disable the image without deletion
-        index (PositiveInteger): Sorting position for display ordering
-    """
-    
-    image = models.ImageField(
-        upload_to=  product_image_path,
-        verbose_name ='Image file'
-    )
-    created_at = models.DateTimeField(
-        auto_now_add =True,
-        verbose_name ='Creation date'
-    )
-    updated_at = models.DateTimeField(
-        auto_now =True,
-        verbose_name ='Last updated'
-    )
-    is_active = models.BooleanField(
-        default =True,
-        verbose_name ='Is active'
-    )
-    index= models.PositiveIntegerField(default=0)
-
-    class Meta:
-        verbose_name = 'Image'
-        verbose_name_plural = 'Images'
-       
-
-    def __str__(self):
-        return f"Image {self.id} - {self.image.name}"
-    
-
-
 class ProductImage(models.Model):
     """
-   
-    Establishes a relationship between Products and Images with metadata.
+    Represents an image associated with a product in the e-commerce system.
     
-    This model serves as a junction table implementing a many-to-many relationship
-    between products and their images, with additional attributes specific to each
-    product-image pairing.
+    Stores product images with metadata and provides organization through:
+    - Automatic path-based storage
+    - Timestamp tracking
+    - Activation control
+    - Display ordering
 
     Attributes:
-        product: Associated Product (ForeignKey)
-        image: Associated Image (ForeignKey) 
-        is_primary: Marks primary display image (Boolean)
-        alt_text: Accessibility description (CharField)
+        product (ForeignKey): The product this image belongs to
+        image (ImageField): The image file with dynamic path generation
+        created_at (DateTimeField): Date/time when the image was first uploaded
+        updated_at (DateTimeField): Date/time when the image was last modified
+        is_active (BooleanField): Controls whether the image is visible in storefront
+        index (PositiveIntegerField): Determines display order in product galleries
     """
+    
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
         related_name='product_images', 
-        verbose_name='Related Product'
+        verbose_name='Product'
     )
-    image = models.ForeignKey(
-        Image,
-        on_delete=models.CASCADE,
-        related_name='product_relations',  
-        verbose_name='Image'
+    image = models.ImageField(
+        upload_to=product_image_path,
+        verbose_name='Image File'
     )
- 
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Created At'
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name='Last Updated'
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name='Active Status',
+        help_text='Designates whether this image should be displayed publicly'
+    )
+    index = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Display Order',
+        help_text='Determines sorting order in image galleries (lower numbers show first)'
+    )
+
     class Meta:
         verbose_name = 'Product Image'
         verbose_name_plural = 'Product Images'
-        ordering = ('image__index',)
-        unique_together = ('product', 'image') 
+        ordering = ('index',)
 
     def __str__(self):
-        return f'Image id({self.image.id}) wfor Product {self.product.id}:{self.product.title}'
+        return f"Image {self.id} for {self.product.name} ({'active' if self.is_active else 'inactive'})"
+
+
