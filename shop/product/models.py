@@ -224,7 +224,7 @@ class ProductImage(models.Model):
         verbose_name='Last Updated'
     )
     is_active = models.BooleanField(
-        default=True,
+        default=False,
         verbose_name='Active Status',
         help_text='Designates whether this image should be displayed publicly'
     )
