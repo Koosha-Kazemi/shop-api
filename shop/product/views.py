@@ -1,55 +1,95 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.generics import ListCreateAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import SAFE_METHODS
 
 from .models import Category, Product, ProductImage
-from .serializer import CategorySerializer, ProductSerializer, ProductImageSerializer
+from .serializer import (CategorySerializer, 
+                         ProductDetailSerializer,
+                         ProductImageSerializer, 
+                         ProductListSerializer)
+
+
 
 class CategoryViewSet(ModelViewSet):
     """
-    A ViewSet for viewing and editing categories.
+    API endpoint that allows categories to be viewed or edited.
     
-    Provides the following actions:
-    - `list`: Retrieve all categories.
-    - `create`: Add a new category.
-    - `retrieve`: Fetch a single category by ID.
-    - `update`: Fully update a category by ID.
-    - `partial_update`: Partially update a category by ID.
-    - `destroy`: Delete a category by ID.
-
-    Uses `CategorySerializer` for all operations.
+    Provides full CRUD operations:
+    - GET /categories/ - List all categories
+    - POST /categories/ - Create new category
+    - GET /categories/{id}/ - Retrieve specific category
+    - PUT/PATCH /categories/{id}/ - Update category
+    - DELETE /categories/{id}/ - Delete category
+    
+    Uses CategorySerializer for all operations.
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
-class ProductView(ListCreateAPIView):
+class ProductListView(ListAPIView):
     """
-    Product list and creation endpoint.
+    API endpoint for listing products with basic information.
     
-    GET:
-    Returns paginated list of all products
+    GET /products/
+    - Returns paginated list of products
+    - Includes only core fields (id, title, price)
+    - Suitable for product listing pages
     
-    POST:
-    Create a new product instance
-    
-    Uses ProductSerializer for data validation and transformation
+    Uses ProductListSerializer for optimized response structure.
     """
-
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-
+    serializer_class = ProductListSerializer
 
 
 class ProductImageView(CreateAPIView):
-    
     """
-    Create new product images.
+    API endpoint for uploading product images.
     
-    POST /api/product-images/
-    - Requires: product ID and image file
-    - Returns: image details with URL
+    POST /product-images/
+    - Requires multipart form data with:
+      - product: ID of related product
+      - image: Image file upload
+      - is_main (optional): Boolean flag for primary image
+    - Returns created image details with 201 status
+    
+    Uses ProductImageSerializer for validation and response.
     """
-
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
+
+
+class ProductImageDetailView(RetrieveAPIView):
+    """
+    API endpoint for retrieving single product image details.
+    
+    GET /product-images/{id}/
+    - Returns complete image metadata including:
+      - Image URL
+      - Related product ID
+      - Dimensions (if available)
+      - Timestamps
+    
+    Uses ProductImageSerializer for consistent response format.
+    """
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageSerializer
+   
+
+
+class ProductDetailView(RetrieveAPIView):
+    """
+    API endpoint for detailed product information.
+    
+    GET /products/{id}/
+    - Returns complete product data including:
+      - All product fields
+      - Nested category information
+      - Array of related images
+      - Pricing details
+      - Inventory status
+    
+    Uses ProductDetailSerializer with depth=1 for related objects.
+    """
+    queryset = Product.objects.all()
+    serializer_class = ProductDetailSerializer

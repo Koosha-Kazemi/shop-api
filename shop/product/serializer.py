@@ -10,20 +10,25 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 
+class ProductListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ('title', 'final_price_value')
+
+
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ('image',)
-        read_only_fields = ('index',)
+        exclude = ('is_active','index')
+      
 
 
-class ProductSerializer(serializers.ModelSerializer):
-    image = ProductImageSerializer(many=True)
+class ProductDetailSerializer(serializers.ModelSerializer):
+    image = ProductImageSerializer(source='product_images', many=True, read_only=True)
     class Meta:
         model = Product
         fields = '__all__'
-        read_only_fields = ('final_price_value',)
-
+      
         
 
 
