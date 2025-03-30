@@ -223,11 +223,6 @@ class ProductImage(models.Model):
         auto_now=True,
         verbose_name='Last Updated'
     )
-    is_active = models.BooleanField(
-        default=False,
-        verbose_name='Active Status',
-        help_text='Designates whether this image should be displayed publicly'
-    )
     index = models.PositiveIntegerField(
         default=0,
         verbose_name='Display Order',

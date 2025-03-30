@@ -19,7 +19,7 @@ class ProductListSerializer(serializers.ModelSerializer):
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        exclude = ('is_active','index')
+        exclude = ('index','product')
       
 
 
@@ -28,7 +28,11 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
-      
-        
 
+    def to_representation(self, instance:Product):
+        data = super().to_representation(instance)
+        categories = instance.category.all()
+        data['category'] = [category.title for category in categories]
+
+        return data
 
