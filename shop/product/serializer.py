@@ -1,6 +1,10 @@
 from rest_framework import serializers
 
-from .models import Category, Product,ProductImage
+from .models import (Category,
+                      Product,
+                      ProductImage,
+                      OptionGroup
+                      )
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -19,7 +23,7 @@ class ProductListSerializer(serializers.ModelSerializer):
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        exclude = ('index','product')
+        exclude = ('index',)
       
 
 
@@ -35,4 +39,9 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         data['category'] = [category.title for category in categories]
 
         return data
+    
 
+
+class OptionGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OptionGroup
