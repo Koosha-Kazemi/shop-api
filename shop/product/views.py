@@ -1,9 +1,10 @@
+from optparse import OptionGroup
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import SAFE_METHODS
 
-from .models import Category, Product, ProductImage
-from .serializer import (CategorySerializer, 
+from .models import Category, Product, ProductImage, OptionGroup
+from .serializer import (CategorySerializer, OptionGroupSerializer, 
                          ProductDetailSerializer,
                          ProductImageSerializer, 
                          ProductListSerializer)
@@ -93,3 +94,20 @@ class ProductDetailView(RetrieveAPIView):
     """
     queryset = Product.objects.all()
     serializer_class = ProductDetailSerializer
+
+
+class OptionGroupViewSet(ModelViewSet):
+    """
+    API endpoint that allows option groups to be viewed or edited.
+    
+    Provides full CRUD operations:
+    - GET /option-groups/ - List all option groups
+    - POST /option-groups/ - Create new option group
+    - GET /option-groups/{id}/ - Retrieve specific option group
+    - PUT/PATCH /option-groups/{id}/ - Update option group
+    - DELETE /option-groups/{id}/ - Delete option group
+    
+    Uses OptionGroupSerializer for all operations.
+    """
+    queryset = OptionGroup.objects.all()
+    serializer_class = OptionGroupSerializer
