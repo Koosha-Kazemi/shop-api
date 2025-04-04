@@ -43,6 +43,11 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     
 
 
+class OptionGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OptionGroup
+        fields = '__all__'
+
 
 class OptionValueSerializer(serializers.ModelSerializer):
     class Meta:
@@ -55,6 +60,8 @@ class OptionAttributeSerializer(serializers.ModelSerializer):
     class Meta:
         model = OptionValue
         fields = '__all__'
+
+
 
     
 
