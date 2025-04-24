@@ -310,10 +310,7 @@ class ProductOptionGroup(models.Model):
     class Meta:
         verbose_name = 'Product Attribute'
         verbose_name_plural = 'Product Attributes'
-        unique_together = ['product', 'option_group']
-        indexes = [
-            models.Index(fields=['is_active']),
-        ]
+      
 
 
 class ProductAttributeValue(models.Model):
@@ -393,20 +390,12 @@ class ProductImage(models.Model):
         verbose_name='Display Order',
         help_text='Determines sorting order in image galleries (lower numbers show first)'
     )
-    is_active = models.BooleanField(
-        default=True,
-        verbose_name='Active Status',
-        help_text='Controls whether the image is visible in storefront'
-    )
 
     class Meta:
         verbose_name = 'Product Image'
         verbose_name_plural = 'Product Images'
         ordering = ('index',)
-        indexes = [
-            models.Index(fields=['is_active']),
-            models.Index(fields=['index']),
-        ]
+     
 
     def __str__(self):
         return f"Image {self.id} for {self.product.title} ({'active' if self.is_active else 'inactive'})"

@@ -1,10 +1,9 @@
-from optparse import OptionGroup
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 from rest_framework.permissions import SAFE_METHODS
 
-from .models import Category, Product, ProductImage, OptionGroup
-from .serializer import (CategorySerializer, OptionGroupSerializer, 
+from .models import Category, OptionAttribute, Product, ProductImage, OptionGroup
+from .serializer import (CategorySerializer, OptionAttributeSerializer, OptionGroupSerializer, 
                          ProductDetailSerializer,
                          ProductImageSerializer, 
                          ProductListSerializer)
@@ -111,3 +110,39 @@ class OptionGroupViewSet(ModelViewSet):
     """
     queryset = OptionGroup.objects.all()
     serializer_class = OptionGroupSerializer
+
+
+class OptionAttributeViewSet(ModelViewSet):
+    """
+    API endpoint that allows option attributes to be viewed or edited.
+    
+    Provides full CRUD operations:
+    - GET /option-attributes/ - List all option attributes
+    - POST /option-attributes/ - Create new option attribute
+    - GET /option-attributes/{id}/ - Retrieve specific option attribute
+    - PUT/PATCH /option-attributes/{id}/ - Update option attribute
+    - DELETE /option-attributes/{id}/ - Delete option attribute
+    
+    Uses OptionAttributeSerializer for all operations.
+    """
+
+    serializer_class = OptionAttributeSerializer
+
+    def get_queryset(self):
+       if self.action in ('list','create',):
+           return OptionAttribute.objects.all()
+       elif self.action in ('retrieve','update','partial_update','destroy'):   
+           return OptionAttribute.objects.all().filter(option_group_id = self.kwargs['id'])
+       
+    def perform_create(self, serializer):
+        serializer.save(
+            option_group_id=self.kwargs['id']
+            )
+        
+    def perfomre_update(self, serializer):
+        serializer.save(
+            option_group_id=self.kwargs['id']
+            )
+        
+    
+        

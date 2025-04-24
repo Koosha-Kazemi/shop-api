@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import (Category,
+from .models import (Category, OptionAttribute,
                       Product,
                       ProductImage,
                       OptionGroup,
@@ -16,9 +16,18 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
+    main_image = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Product
-        fields = ('title', 'final_price_value')
+        fields = ('title', 'final_price_value', 'main_image')
+
+    def get_main_image(self, obj:Product):
+        try:
+            main_image = obj.product_images.get(index=0)
+            return ProductImageSerializer(main_image).data
+        except ProductImage.DoesNotExist:
+            return None
+    
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -58,11 +67,7 @@ class OptionValueSerializer(serializers.ModelSerializer):
 
 class OptionAttributeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = OptionValue
+        model = OptionAttribute
         fields = '__all__'
-
-
-
-    
-
+        
 

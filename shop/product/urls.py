@@ -13,7 +13,7 @@ urlpatterns = [
     path('product/', ProductListView.as_view(), name='product_list'),
     path('product-image/', ProductImageView.as_view(), name='product_image'),
     path('product-image/<int:pk>/', ProductImageDetailView.as_view(), name='product_image'),
-    path('product/<int:pk>',ProductDetailView.as_view(), name='product_detail')
+    path('product/<int:pk>',ProductDetailView.as_view(), name='product_detail'),
 
 
 ]
