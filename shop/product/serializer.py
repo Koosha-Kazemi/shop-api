@@ -57,6 +57,11 @@ class OptionGroupSerializer(serializers.ModelSerializer):
         model = OptionGroup
         fields = '__all__'
 
+    def validate_title(self, value):
+        if value == '':
+            raise serializers.ValidationError("Title cannot be empty.")
+        return value
+
 
 class OptionValueSerializer(serializers.ModelSerializer):
     class Meta:
